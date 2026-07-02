@@ -59,6 +59,7 @@ ipcMain.on('open-auth-window', (event, authUrl) => {
         authWindow.close();
       }
     } catch (e) {
+      console.error("Error occurred while checking authentication:", e);
     }
   }, 500);
 

@@ -28,8 +28,7 @@ ipcRenderer.on('auth-tokens', (event, tokenData) => {
     refreshToken = tokenData.refresh_token;
 
     localStorage.setItem('spotify_refresh_token', refreshToken);
-    console.log("Access Token:", accessToken);
-    console.log("Refresh Token:", refreshToken);
+    console.log("Successfully received tokens from the main process");
     
     isAuthenticating = false;
     checkMusic();
@@ -40,7 +39,7 @@ async function refreshMyToken() {
     try {
         const response = await axios.get(`${SERVER_URL}/refresh?refresh_token=${refreshToken}`);
         accessToken = response.data.access_token;
-        console.log("Refreshed Access Token:", accessToken);
+        console.log("Successfully refreshed access token");
     } catch (e) {
         console.error("Failed to refresh token:", e);
         localStorage.removeItem('spotify_refresh_token');
