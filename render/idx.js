@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron'); // 👈 일렉트론 IPC 통신 추가
+const { ipcRenderer } = require('electron');
 const axios = require('axios');
 
 const CLIENT_ID = "acd061d98b5040cb985c8435b984ab99";
@@ -20,19 +20,18 @@ function startOAuthLogin() {
                    '&response_type=code&redirect_uri=' + encodeURIComponent(REDIRECT_URI) + 
                    '&scope=' + encodeURIComponent(scopes);
     
-    // 🚀 메인 프로세스(main.js)한테 별도 팝업창 띄우라고 토스!
     ipcRenderer.send('open-auth-window', authUrl);
 }
 
-// 📥 [추가] 메인 프로세스가 팝업창에서 긁어온 토큰 뱉어주면 받아먹는 곳
 ipcRenderer.on('auth-tokens', (event, tokenData) => {
     accessToken = tokenData.access_token;
     refreshToken = tokenData.refresh_token;
 
     localStorage.setItem('spotify_refresh_token', refreshToken);
-    console.log("🚀 메인 프로세스를 통해 토큰 가로채기 및 저장 성공!");
+    console.log("Access Token:", accessToken);
+    console.log("Refresh Token:", refreshToken);
     
-    isAuthenticating = false; // 로그인 처리 끝
+    isAuthenticating = false;
     checkMusic();
 });
 
@@ -41,9 +40,9 @@ async function refreshMyToken() {
     try {
         const response = await axios.get(`${SERVER_URL}/refresh?refresh_token=${refreshToken}`);
         accessToken = response.data.access_token;
-        console.log("🔄 토큰 자동 갱신 완료!");
+        console.log("Refreshed Access Token:", accessToken);
     } catch (e) {
-        console.error("토큰 갱신 실패");
+        console.error("Failed to refresh token:", e);
         localStorage.removeItem('spotify_refresh_token');
         refreshToken = null;
     }
