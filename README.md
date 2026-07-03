@@ -1,3 +1,5 @@
+> Only QHD(2560x1440) is supported by now
+
 # spotify-overlayer
 
 An Electron-based desktop overlay application that retrieves currently playing track information from Spotify in real-time and displays it as a glassmorphism-style card in the bottom-right corner of the screen. It integrates with a headless backend server for OAuth 2.0 authentication and token refreshing to provide a secure and automated login structure.
